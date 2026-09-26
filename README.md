@@ -87,3 +87,8 @@ src/
 - 3D simplex noise by Ian McEwan, Ashima Arts ([webgl-noise](https://github.com/ashima/webgl-noise), MIT)
 - Type: [Fraunces](https://fonts.google.com/specimen/Fraunces) and
   [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) via Google Fonts
+
+## License
+
+[MIT](LICENSE) © 2026 Abdullah Asghar. This covers the code in this repository. Dependencies,
+the simplex noise function and the fonts keep their own licenses.
