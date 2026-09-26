@@ -1,0 +1,277 @@
+/* ------------------------------------------------------------------
+   NOCTURNE — base styles
+   Tweak the tokens below first; most of the look lives here.
+------------------------------------------------------------------ */
+:root {
+  --bg: #0a0a0a;            /* near-black base */
+  --fg: #ece8e1;            /* warm off-white text */
+  --muted: #8a857d;         /* secondary text */
+  --accent: #f26b3a;        /* "ember" — molten copper/sodium-lamp orange */
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --gutter: clamp(16px, 4vw, 48px);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+/* Visually hidden, still read by screen readers. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- Background canvas ---------- */
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+main, .nav { position: relative; z-index: 1; }
+
+/* ---------- Nav ---------- */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px var(--gutter);
+  z-index: 10;
+  mix-blend-mode: difference;
+}
+.nav__mark { font-size: 20px; font-weight: 500; font-style: italic; }
+.nav__links { display: flex; gap: clamp(16px, 3vw, 40px); }
+.nav__links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 var(--gutter);
+  position: relative;
+}
+.hero__eyebrow { margin-bottom: 2vw; }
+.hero__title {
+  font-size: clamp(56px, 16.5vw, 280px);
+  font-weight: 300;
+  font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 0;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+  /* hidden until JS has split it — prevents a flash of unsplit text */
+  visibility: hidden;
+}
+.hero__title .char { will-change: transform; }
+.hero__tagline {
+  margin-top: 1.4vw;
+  font-size: clamp(18px, 2.4vw, 36px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+  font-variation-settings: "opsz" 36, "SOFT" 100;
+}
+/* Scramble target: inline-block so JS can freeze its width during a
+   scramble; left-aligned so glyph-width changes only move the right edge. */
+.hero__scramble {
+  display: inline-block;
+  white-space: nowrap;
+  text-align: left;
+}
+/* Glyphs that haven't resolved yet. TUNE opacity 0.3–0.8 */
+.hero__scramble .is-scrambled { opacity: 0.45; }
+
+/* ---------- Magnetic buttons ---------- */
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(28px, 3.2vw, 48px);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 28px;
+  border: 1px solid rgba(236, 232, 225, 0.22);
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.35);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: border-color 0.4s, background-color 0.4s;
+  will-change: transform; /* moved every frame by magnetic.js */
+}
+.btn:hover { border-color: rgba(236, 232, 225, 0.6); background: rgba(10, 10, 10, 0.55); }
+.btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+.hero__scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero__line {
+  width: 48px;
+  height: 1px;
+  background: currentColor;
+  display: inline-block;
+  transform-origin: left;
+  animation: line 2.4s cubic-bezier(.7,0,.3,1) infinite;
+}
+@keyframes line {
+  0% { transform: scaleX(0); transform-origin: left; }
+  50% { transform: scaleX(1); transform-origin: left; }
+  51% { transform: scaleX(1); transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+
+/* ---------- Orbit (pinned, scroll-scrubbed 3D) ---------- */
+.orbit {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  padding: 0 var(--gutter);
+  overflow: hidden;
+}
+.orbit__label {
+  position: absolute;
+  top: 112px;
+  left: var(--gutter);
+}
+.orbit__title {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(40px, 8vh, 96px);
+  font-size: clamp(36px, 6vw, 96px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variation-settings: "opsz" 144, "SOFT" 100;
+}
+.orbit__title em { color: var(--accent); }
+.orbit__readout {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(40px, 8vh, 96px);
+  font-variant-numeric: tabular-nums; /* digits don't shift as they count */
+}
+
+/* ---------- Plate (WebGL ripple drawn under .plate__media) ---------- */
+.plate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: clamp(32px, 6vw, 96px);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10vh var(--gutter) 24vh;
+}
+.plate__media {
+  width: min(100%, 440px);
+  aspect-ratio: 4 / 5;   /* must match the artwork in ripple.js */
+  margin: 0;
+}
+.plate__copy { flex: 1 1 260px; }
+.plate__text {
+  margin-top: 20px;
+  font-size: clamp(26px, 3.4vw, 48px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.plate__text em { color: var(--accent); }
+
+/* ---------- Manifesto (gives Lenis something to scroll) ---------- */
+.manifesto {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20vh var(--gutter);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.manifesto__label { margin-bottom: 32px; }
+.manifesto__text {
+  font-size: clamp(26px, 4.2vw, 64px);
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 96, "SOFT" 50;
+}
+
+/* ---------- Custom cursor ---------- */
+.cursor { display: none; }
+
+/* Only on devices with a real mouse — touch keeps the native behaviour */
+@media (hover: hover) and (pointer: fine) {
+  html, body, a, button { cursor: none; }
+
+  .cursor {
+    display: block;
+    position: fixed;
+    top: 0; left: 0;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;      /* centre on the pointer */
+    border-radius: 50%;
+    background: var(--fg);
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;  /* inverts whatever is underneath */
+    will-change: transform;
+    opacity: 0;                   /* shown on first mousemove */
+    transition: opacity 0.3s;
+  }
+  .cursor.is-visible { opacity: 1; }
+  /* The scale is animated from JS (see cursor.js) so it composes with the
+     lerped translate; this class just swaps the colour/blend. */
+  .cursor.is-hover { background: #fff; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero__title { visibility: visible; }
+  .hero__line { animation: none; transform: scaleX(1); }
+}

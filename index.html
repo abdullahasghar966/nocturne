@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NOCTURNE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fraunces is a variable font (wght 100–900, opsz, SOFT, WONK) for the big kinetic type.
+         JetBrains Mono for small technical labels. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=JetBrains+Mono:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Fixed full-viewport WebGL canvas, sits behind everything -->
+    <canvas id="bg" aria-hidden="true"></canvas>
+
+    <!-- Custom cursor (hidden on touch devices via CSS) -->
+    <div class="cursor" aria-hidden="true"></div>
+
+    <header class="nav">
+      <a href="#top" class="nav__mark">N°</a>
+      <nav class="nav__links">
+        <a href="#manifesto">Manifesto</a>
+        <a href="#top">Index</a>
+        <a href="mailto:hello@example.com">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <p class="hero__eyebrow mono">Vol. 01 — After Dark</p>
+        <h1 class="hero__title">NOCTURNE</h1>
+        <!-- The visible text scrambles on hover (scramble.js), so screen
+             readers get a stable copy and never hear the noise. -->
+        <p class="hero__tagline">
+          <span class="sr-only">an experience in motion</span>
+          <span class="hero__scramble" data-scramble data-cursor-hover aria-hidden="true">an experience in motion</span>
+        </p>
+        <!-- data-magnetic: leans toward the cursor (magnetic.js) -->
+        <div class="hero__actions">
+          <a href="#orbit" class="btn" data-magnetic>Enter</a>
+          <a href="#manifesto" class="btn" data-magnetic>Manifesto</a>
+          <a href="mailto:hello@example.com" class="btn" data-magnetic>Say hello</a>
+        </div>
+        <div class="hero__scroll mono">Scroll <span class="hero__line"></span></div>
+      </section>
+
+      <!-- Pinned while its 3D object turns with scroll (scroll-object.js).
+           The object is drawn by the WebGL stage, positioned over this box. -->
+      <section class="orbit" id="orbit">
+        <p class="mono orbit__label">(01) Orbit</p>
+        <h2 class="orbit__title">Weight, <em>turning</em><br />in the dark</h2>
+        <p class="mono orbit__readout"><span class="orbit__deg">000</span>°</p>
+      </section>
+
+      <section class="manifesto" id="manifesto">
+        <p class="mono manifesto__label">(02) Manifesto</p>
+        <p class="manifesto__text">
+          Light moves slower after midnight. Surfaces soften, edges forget
+          themselves, and every gesture leaves a faint trace in the dark.
+          This is a study in that residue — of weight, drift, and the quiet
+          space between frames.
+        </p>
+      </section>
+
+      <!-- data-ripple: an empty box the WebGL stage draws the ripple plate
+           under (ripple.js). It stays transparent so the plate shows through. -->
+      <section class="plate">
+        <figure class="plate__media" data-ripple role="img" aria-label="Abstract plate: concentric rings around an ember glow"></figure>
+        <div class="plate__copy">
+          <p class="mono">(03) Residue</p>
+          <p class="plate__text">Touch the surface.<br />It remembers you, <em>briefly</em>.</p>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
